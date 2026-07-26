@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Features() {
   const [activeTab, setActiveTab] = useState('hunting');
@@ -211,8 +212,15 @@ export default function Features() {
         </div>
 
         {/* TAB 1: THREAT HUNTING */}
-        {activeTab === 'hunting' && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <AnimatePresence mode="wait">
+          {activeTab === 'hunting' && (
+            <motion.div
+              key="hunting"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+              className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div className="lg:col-span-5 space-y-6 bg-slate-900/40 border border-slate-800 p-6 rounded-2xl backdrop-blur-md">
               <h3 className="text-xl font-bold text-white flex items-center gap-2">
                 <span className="w-2 h-2 bg-blue-500 rounded-full animate-ping" />
@@ -255,12 +263,20 @@ export default function Features() {
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* TAB 2: PREDICTIVE PATCHING */}
-        {activeTab === 'patching' && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <AnimatePresence mode="wait">
+          {activeTab === 'patching' && (
+            <motion.div
+              key="patching"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+              className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div className="lg:col-span-5 space-y-6 bg-slate-900/40 border border-slate-800 p-6 rounded-2xl backdrop-blur-md">
               <h3 className="text-xl font-bold text-white flex items-center gap-2">
                 <span className="w-2 h-2 bg-emerald-500 rounded-full animate-ping" />
@@ -317,12 +333,20 @@ export default function Features() {
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* TAB 3: ZERO-DOWNTIME INCIDENT RESPONSE */}
-        {activeTab === 'response' && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <AnimatePresence mode="wait">
+          {activeTab === 'response' && (
+            <motion.div
+              key="response"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+              className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div className="lg:col-span-5 space-y-6 bg-slate-900/40 border border-slate-800 p-6 rounded-2xl backdrop-blur-md">
               <h3 className="text-xl font-bold text-white flex items-center gap-2">
                 <span className="w-2 h-2 bg-purple-500 rounded-full animate-ping" />
@@ -375,8 +399,9 @@ export default function Features() {
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );

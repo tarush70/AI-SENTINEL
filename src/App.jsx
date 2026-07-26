@@ -1,14 +1,16 @@
 import React from 'react';
 import Hero from "./hero";
 import Features from "./components/Features";
+import BackgroundWrapper from "./components/BackgroundWrapper";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
-    <div className="bg-slate-950 min-h-screen selection:bg-blue-500/30">
-      {/* You can add a Navbar here later */}
+    <BackgroundWrapper>
+      <Navbar />
       <Hero />
       <Features />
-    </div>
+    </BackgroundWrapper>
   );
 }
 
