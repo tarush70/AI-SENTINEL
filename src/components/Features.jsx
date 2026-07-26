@@ -176,7 +176,7 @@ export default function Features() {
   }, [responseStatus]);
 
   return (
-    <section className="relative bg-slate-950 text-slate-100 py-24 px-6 border-t border-slate-900">
+    <section id="demo" className="scroll-mt-28 relative bg-slate-950 text-slate-100 py-24 px-6 border-t border-slate-900">
       <div className="max-w-7xl mx-auto w-full">
         
         {/* Header Section */}

@@ -55,24 +55,25 @@ export default function Hero() {
         
         {/* Left Column: Value Proposition & Form */}
         <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-500/30 bg-blue-950/40 text-blue-400 text-xs font-medium tracking-wide">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-400/40 bg-blue-500/10 text-blue-300 text-xs font-medium tracking-wide shadow-lg shadow-blue-950/40">
             <Shield className="w-3.5 h-3.5 animate-pulse" />
             Next-Gen Autonomous Cyber Defense
           </div>
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-none bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
-            Proactive, Autonomous <span className="bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">Digital Defense.</span>
+            Secure AI agents against the <span className="bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">OWASP Top 10 for LLMs.</span>
           </h1>
 
-          <p className="text-lg text-slate-400 max-w-xl mx-auto lg:mx-0">
-            Stop corporate cyber threats before they breach your parameter. AI Sentinel continuously hunts vulnerabilities and deploys autonomous network patches in milliseconds.
+          <p className="text-lg text-slate-300 max-w-xl mx-auto lg:mx-0">
+            Stop prompt injection (LLM01), sensitive-information disclosure (LLM02), and supply-chain weaknesses before they reach your model or your customers.
           </p>
 
           {/* Waitlist Capture form */}
-          <div className="max-w-md mx-auto lg:mx-0 pt-2">
+          <div id="waitlist" className="scroll-mt-28 max-w-md mx-auto lg:mx-0 pt-2">
             {!submitted ? (
               <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2 bg-slate-900/80 p-2 rounded-xl border border-slate-800 backdrop-blur-md">
                 <input
+                  id="waitlist-form"
                   type="email"
                   required
                   placeholder="Enter your business email"
@@ -94,6 +95,11 @@ export default function Hero() {
               </div>
             )}
             <p className="text-xs text-slate-500 mt-3 text-left pl-2">⚡ Zero configuration required. Fully SOC2 & ISO27001 ready.</p>
+          </div>
+          <div className="grid grid-cols-3 gap-3 max-w-md mx-auto lg:mx-0 pt-2 text-left">
+            {[['4ms', 'Threat response'], ['24/7', 'Autonomous coverage'], ['0', 'Downtime targets']].map(([value, label]) => (
+              <div key={label} className="rounded-xl border border-slate-800 bg-slate-900/50 px-3 py-3 backdrop-blur-sm"><div className="text-base font-extrabold text-white">{value}</div><div className="mt-0.5 text-[10px] uppercase tracking-wide text-slate-500">{label}</div></div>
+            ))}
           </div>
         </div>
 
