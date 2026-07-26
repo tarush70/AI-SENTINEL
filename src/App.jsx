@@ -1,5 +1,5 @@
 import React from 'react';
-import Hero from "./hero";
+import Hero from "./components/hero";
 import Features from "./components/Features";
 import BackgroundWrapper from "./components/BackgroundWrapper";
 import Navbar from "./components/Navbar";
