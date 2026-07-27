@@ -8,7 +8,7 @@ const navigation = [
   { label: 'Enterprise', target: 'enterprise' },
 ];
 
-export default function Navbar() {
+export default function Navbar({ onLoginClick }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
@@ -49,9 +49,20 @@ export default function Navbar() {
           ))}
         </div>
 
-        <button type="button" onClick={bookDemo} className="hidden md:block bg-white text-slate-950 px-4 py-2 rounded-full text-xs font-bold hover:bg-slate-200 transition-colors">
-          Book Demo
-        </button>
+        <div className="hidden md:flex items-center gap-4">
+          <button
+            onClick={onLoginClick}
+            className="text-sm font-medium text-slate-300 hover:text-white transition-colors"
+          >
+            Log In
+          </button>
+          <button
+            onClick={onLoginClick}
+            className="bg-white text-slate-950 px-4 py-2 rounded-full text-xs font-bold hover:bg-slate-200 transition-colors"
+          >
+            Get Started
+          </button>
+        </div>
 
         <button type="button" className="md:hidden text-slate-200 p-1" onClick={() => setIsMenuOpen((open) => !open)} aria-expanded={isMenuOpen} aria-label="Toggle navigation menu">
           {isMenuOpen ? <X /> : <Menu />}

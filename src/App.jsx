@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Hero from "./components/hero";
 import Features from "./components/Features";
 import BackgroundWrapper from "./components/BackgroundWrapper";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Implementation from "./components/Implementation";
+import Dashboard from "./components/Dashboard";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // If user is logged in, show the SaaS Dashboard
+  if (isLoggedIn) {
+    return <Dashboard onLogout={() => setIsLoggedIn(false)} />;
+  }
+
+  // Otherwise, show the Marketing Website
   return (
     <BackgroundWrapper>
-      <Navbar />
+      <Navbar onLoginClick={() => setIsLoggedIn(true)} />
       <main>
         <div id="hero">
           <Hero />
