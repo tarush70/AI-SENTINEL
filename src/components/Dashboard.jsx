@@ -1,25 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   LayoutDashboard, ShieldAlert, Activity, Key, CreditCard,
-  Settings, LogOut, Copy, CheckCircle, Bell
+  Settings, LogOut, Copy, CheckCircle, Bell, TrendingUp
 } from 'lucide-react';
 
 export default function Dashboard({ onLogout }) {
   const [activeTab, setActiveTab] = useState('overview');
   const [copied, setCopied] = useState(false);
-
-  // Simulation Data (This would come from your real database later)
-  const stats = [
-    { label: "Total Requests", value: "1.2M", change: "+12%", color: "text-blue-400" },
-    { label: "Threats Blocked", value: "14,032", change: "+5.3%", color: "text-emerald-400" },
-    { label: "Avg Latency", value: "14ms", change: "-2ms", color: "text-purple-400" },
-  ];
-
-  const recentLogs = [
+  const [threatCount, setThreatCount] = useState(14032);
+  const [recentLogs, setRecentLogs] = useState([
     { id: 'evt_01', type: 'Prompt Injection', source: '192.168.0.4', time: '2m ago', status: 'BLOCKED' },
     { id: 'evt_02', type: 'SQL Injection', source: '45.22.19.11', time: '14m ago', status: 'BLOCKED' },
     { id: 'evt_03', type: 'PII Leak (Email)', source: '10.0.0.55', time: '1h ago', status: 'REDACTED' },
     { id: 'evt_04', type: 'Jailbreak Attempt', source: '88.12.4.9', time: '3h ago', status: 'BLOCKED' },
+  ]);
+
+  // ── Live polling from demo server ─────────────────────────────────────
+  useEffect(() => {
+    let mounted = true;
+    const poll = async () => {
+      try {
+        const res = await fetch('http://127.0.0.1:3001/api/threats');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!mounted) return;
+        if (data.count > 0) {
+          setThreatCount(14032 + data.count);
+        }
+        if (data.events && data.events.length > 0) {
+          setRecentLogs(data.events.slice(0, 4));
+        }
+      } catch {
+        // Demo server not running — keep defaults
+      }
+    };
+    // Poll every 2 seconds
+    poll();
+    const interval = setInterval(poll, 2000);
+    return () => {
+      mounted = false;
+      clearInterval(interval);
+    };
+  }, []);
+
+  // Simulation Data (This would come from your real database later)
+  const stats = [
+    { label: "Total Requests", value: "1.2M", change: "+12%", color: "text-blue-400" },
+    { label: "Threats Blocked", value: threatCount.toLocaleString(), change: "+5.3%", color: "text-emerald-400" },
+    { label: "Avg Latency", value: "14ms", change: "-2ms", color: "text-purple-400" },
   ];
 
   const copyKey = () => {
