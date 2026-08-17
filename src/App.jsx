@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Implementation from "./components/Implementation";
 import Dashboard from "./components/Dashboard";
+import KernelDemo from "./components/KernelDemo";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -23,6 +24,7 @@ function App() {
         <div id="hero">
           <Hero />
         </div>
+        <KernelDemo />
         <Implementation />
         <div id="features">
           <Features />

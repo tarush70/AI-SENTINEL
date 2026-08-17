@@ -17,12 +17,12 @@ export default function Features() {
   ]);
   const [huntLogs, setHuntLogs] = useState([]);
 
-  // Tab 2: Predictive Patching State
+  // Tab 2: Deterministic taint-kernel state
   const [patchLogs, setPatchLogs] = useState([]);
   const [agentMetrics, setAgentMetrics] = useState({
-    systemIntegrity: '100%',
-    activePipelines: '14 Active',
-    blockedExecutions: '0 Default'
+    systemIntegrity: 'UNSET',
+    activePipelines: 'IDLE',
+    blockedExecutions: 'PENDING'
   });
 
   // Tab 3: Zero-Downtime Incident Response State
@@ -79,43 +79,42 @@ export default function Features() {
   }, [huntStatus]);
 
   // ==========================================
-  // MODULE 2 ENGINE: PREDICTIVE PATCHING
+  // MODULE 2 ENGINE: DETERMINISTIC TAINT KERNEL
   // ==========================================
   useEffect(() => {
     let timer;
     if (patchStatus === 'intercepting') {
       setPatchLogs([
-        '[INBOUND] AI Agent "Data-Sync-Bot" requested OS shell access...',
-        '[ANALYSIS] Intercepting generated prompt vector context structure...',
-        '[ALERT] User Input detected: "Format root directory after exporting data"'
+        '[SOURCE] TaintedVariable("DROP TABLE users;") created from untrusted input.',
+        '[FLOW] employee_bot.process_agent_action → delete_database_record("users", malicious_id).',
+        '[ANALYSIS] @critical_sink inspecting positional and keyword arguments...'
       ]);
       timer = setTimeout(() => {
         setPatchStatus('sandboxing');
         setProgress(50);
-      }, 1500);
+      }, 1200);
     } else if (patchStatus === 'sandboxing') {
       setPatchLogs((prev) => [
         ...prev,
-        '[SANDBOX] Redirecting runtime execution to isolated virtual proxy layer...',
-        '[SIMULATION] Command execution result: Destructive system filesystem wipe simulated.',
-        '[CRITICAL] Indirect Prompt Injection leading to Remote Code Execution (RCE) validated.'
+        '[SINK] delete_database_record is decorated with @critical_sink.',
+        '[TAINT CHECK] TaintedVariable detected: TRUE.',
+        '[AI SENTINEL PANIC] Blocked execution of delete_database_record!'
       ]);
-      setAgentMetrics(prev => ({ ...prev, systemIntegrity: 'DEGRADED (Sandbox)' }));
+      setAgentMetrics({ systemIntegrity: 'TRUE', activePipelines: 'INSPECTING', blockedExecutions: 'PENDING' });
       timer = setTimeout(() => {
         setPatchStatus('patched');
         setProgress(100);
-      }, 2000);
+      }, 1500);
     } else if (patchStatus === 'patched') {
       setPatchLogs((prev) => [
         ...prev,
-        '[AI SECURITY] Real-time execution token revoked for Data-Sync-Bot.',
-        '[PATCH] Synthesized context boundary rule injected into runtime environment.',
-        '[SUCCESS] AI Engine hardened against payload exploit. Main pipeline uncompromised.'
+        '[RESULT] {"status": "blocked", "error": "Taint Check Failed"}',
+        '[SUCCESS] Database write prevented before the critical sink executed.'
       ]);
       setAgentMetrics({
-        systemIntegrity: '100% SECURE',
-        activePipelines: '14 Active',
-        blockedExecutions: '1 Intercepted'
+        systemIntegrity: 'TRUE',
+        activePipelines: 'BLOCKED',
+        blockedExecutions: 'PREVENTED'
       });
     }
     return () => clearTimeout(timer);
@@ -201,7 +200,7 @@ export default function Features() {
             onClick={() => { setActiveTab('patching'); setProgress(0); }}
             className={`px-5 py-2.5 rounded-lg text-sm font-mono transition-all border ${activeTab === 'patching' ? 'bg-blue-950 border-blue-500 text-blue-400' : 'bg-slate-900/50 border-slate-800 text-slate-500 hover:text-slate-300'}`}
           >
-            02 // Predictive Agent Patching
+            02 // Deterministic Taint Kernel
           </button>
           <button 
             onClick={() => { setActiveTab('response'); setProgress(0); }}
@@ -267,7 +266,7 @@ export default function Features() {
           )}
         </AnimatePresence>
 
-        {/* TAB 2: PREDICTIVE PATCHING */}
+        {/* TAB 2: DETERMINISTIC TAINT KERNEL */}
         <AnimatePresence mode="wait">
           {activeTab === 'patching' && (
             <motion.div
@@ -280,10 +279,10 @@ export default function Features() {
             <div className="lg:col-span-5 space-y-6 bg-slate-900/40 border border-slate-800 p-6 rounded-2xl backdrop-blur-md">
               <h3 className="text-xl font-bold text-white flex items-center gap-2">
                 <span className="w-2 h-2 bg-emerald-500 rounded-full animate-ping" />
-                AI Agent RCE Sandboxing
+                Source → flow → critical sink
               </h3>
               <p className="text-sm text-slate-400 leading-relaxed">
-                When your AI Agents gain server tool access, attackers use downstream injections to hijack terminal sessions. AI Sentinel runs predictive sandboxing to test agent outputs before they execute on production cores.
+                This browser demo mirrors <code>sentinel_kernel.py</code>: user-originated values are tagged as tainted, then deterministically blocked when they reach a protected system operation.
               </p>
               <div className="space-y-3">
                 <div className="w-full h-1.5 bg-slate-950 rounded-full overflow-hidden">
@@ -295,37 +294,37 @@ export default function Features() {
                 disabled={patchStatus === 'intercepting' || patchStatus === 'sandboxing'}
                 className="w-full bg-slate-950 hover:bg-slate-900 text-emerald-400 border border-emerald-500/30 font-mono text-xs py-3 rounded-xl"
               >
-                {patchStatus === 'idle' && '> TRIGGER AGENT RCE ATTACK SIMULATION'}
-                {patchStatus !== 'idle' && patchStatus !== 'patched' ? '> EVALUATING EXECUTION TOKENS...' : '> SIMULATE ATTACK PIPELINE AGAIN'}
+                {patchStatus === 'idle' && '> RUN TAINTED DELETE DEMO'}
+                {patchStatus !== 'idle' && patchStatus !== 'patched' ? '> TRACING TAINTED DATA FLOW...' : '> RUN DETERMINISTIC KERNEL AGAIN'}
               </button>
             </div>
 
             <div className="lg:col-span-7 space-y-6">
               <div className="grid grid-cols-3 gap-4">
                 <div className="bg-slate-950 border border-slate-800 rounded-xl p-4">
-                  <div className="text-[10px] font-mono text-slate-500 mb-2">System Integrity</div>
-                  <div className={`text-xs font-bold font-mono ${agentMetrics.systemIntegrity.includes('DEGRADED') ? 'text-amber-400 animate-pulse' : 'text-emerald-400'}`}>{agentMetrics.systemIntegrity}</div>
+                  <div className="text-[10px] font-mono text-slate-500 mb-2">Taint Tag</div>
+                  <div className={`text-xs font-bold font-mono ${agentMetrics.systemIntegrity === 'TRUE' ? 'text-amber-400 animate-pulse' : 'text-slate-500'}`}>{agentMetrics.systemIntegrity}</div>
                 </div>
                 <div className="bg-slate-950 border border-slate-800 rounded-xl p-4">
-                  <div className="text-[10px] font-mono text-slate-500 mb-2">Agent Framework</div>
-                  <div className="text-xs font-bold text-blue-400">{agentMetrics.activePipelines}</div>
+                  <div className="text-[10px] font-mono text-slate-500 mb-2">Critical Sink</div>
+                  <div className={`text-xs font-bold ${agentMetrics.activePipelines === 'BLOCKED' ? 'text-emerald-400' : 'text-blue-400'}`}>{agentMetrics.activePipelines}</div>
                 </div>
                 <div className="bg-slate-950 border border-slate-800 rounded-xl p-4">
-                  <div className="text-[10px] font-mono text-slate-500 mb-2">RCE Intercepts</div>
-                  <div className="text-xs font-bold text-rose-400">{agentMetrics.blockedExecutions}</div>
+                  <div className="text-[10px] font-mono text-slate-500 mb-2">Database Write</div>
+                  <div className={`text-xs font-bold ${agentMetrics.blockedExecutions === 'PREVENTED' ? 'text-emerald-400' : 'text-slate-500'}`}>{agentMetrics.blockedExecutions}</div>
                 </div>
               </div>
 
               <div className="bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden shadow-2xl">
                 <div className="p-4 bg-slate-900/30 border-b border-slate-800 text-xs font-mono text-slate-400">
-                  SANDBOX EXECUTION LOG
+                  DETERMINISTIC KERNEL TRACE
                 </div>
                 <div className="p-4 font-mono text-[11px] h-40 overflow-y-auto space-y-1 bg-slate-950">
                   {patchLogs.length === 0 ? (
-                    <div className="text-slate-600">// Awaiting execution sequence. Deploy attack simulation to view runtime sandbox logic.</div>
+                    <div className="text-slate-600">// Awaiting a tainted execution sequence. Run the demo to inspect the kernel trace.</div>
                   ) : (
                     patchLogs.map((l, i) => (
-                      <div key={i} className={`${l.includes('CRITICAL') ? 'text-rose-400' : l.includes('SUCCESS') ? 'text-emerald-400' : l.includes('ALERT') ? 'text-amber-400' : 'text-slate-400'}`}>
+                      <div key={i} className={`${l.includes('PANIC') ? 'text-rose-400' : l.includes('SUCCESS') || l.includes('RESULT') ? 'text-emerald-400' : l.includes('TAINT') || l.includes('SOURCE') ? 'text-amber-400' : 'text-slate-400'}`}>
                         {l}
                       </div>
                     ))

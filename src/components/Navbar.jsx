@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { CalendarDays, CheckCircle2, Menu, Shield, X } from 'lucide-react';
 
 const navigation = [
+  { label: 'Kernel', target: 'kernel' },
   { label: 'Threat Engine', target: 'features' },
   { label: 'Integration', target: 'integration' },
   { label: 'SOC 2', target: 'compliance' },

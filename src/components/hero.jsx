@@ -68,6 +68,10 @@ export default function Hero() {
             Stop prompt injection (LLM01), sensitive-information disclosure (LLM02), and supply-chain weaknesses before they reach your model or your customers.
           </p>
 
+          <button type="button" onClick={() => document.getElementById('kernel')?.scrollIntoView({ behavior: 'smooth', block: 'start' })} className="inline-flex items-center justify-center rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-4 py-3 text-sm font-bold text-emerald-300 transition-colors hover:bg-emerald-500/20 hover:text-white">
+            See the deterministic kernel proof
+          </button>
+
           {/* Waitlist Capture form */}
           <div id="waitlist" className="scroll-mt-28 max-w-md mx-auto lg:mx-0 pt-2">
             {!submitted ? (
