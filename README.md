@@ -1,16 +1,48 @@
-# React + Vite
+# AI Sentinel
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+AI Sentinel is a deep-tech security proof of concept for AI agents. It moves
+beyond probabilistic application-layer wrappers toward a deterministic runtime
+execution kernel.
 
-Currently, two official plugins are available:
+## Core innovation: deterministic taint analysis
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Instead of guessing whether a prompt is bad, AI Sentinel uses information-flow
+control to track untrusted data.
 
-## React Compiler
+- **Tagging:** User-originated input is represented by `TaintedVariable`.
+- **Tracking:** The taint follows that value as it flows through the agent.
+- **Enforcement:** A `@critical_sink` blocks execution whenever tainted data
+  reaches a sensitive operation.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Run the architecture demos
 
-## Expanding the ESLint configuration
+These scripts are safe simulations: they only print outcomes and never connect
+to or modify a database.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 1. Unprotected breach
+
+Simulate an agent that allows a malicious value to reach a critical operation.
+
+```bash
+python3 demo_unprotected.py
+```
+
+### 2. AI Sentinel defense
+
+Simulate the execution kernel intercepting the tainted flow before it reaches
+the critical sink.
+
+```bash
+python3 demo_protected.py
+```
+
+## Repository layout
+
+- `sentinel_kernel.py` — deterministic taint-analysis kernel.
+- `employee_bot.py` — protected agent simulation.
+- `demo_unprotected.py` and `demo_protected.py` — before/after demonstrations.
+- `legacy/` — preserved network, middleware, and cluster-manager simulations
+  from the previous architecture.
+
+The web interface remains a separate Vite application and can be built with
+`npm run build`.

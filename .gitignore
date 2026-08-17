@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 # Vercel project metadata — needed for deployments
 !.vercel
+__pycache__/
+*.py[cod]
