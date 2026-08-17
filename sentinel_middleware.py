@@ -1,14 +1,14 @@
-"""
-ARCHIVED: sentinel_middleware.py
-This module has been archived and moved to legacy/sentinel_middleware.py
+"""ARCHIVED: the probabilistic middleware is preserved in ``legacy/``.
 
-Original implementation preserved under legacy/ for historical reference.
+AI Sentinel's active proof of concept is now ``sentinel_kernel.py``.
 """
 
 import warnings
+
 warnings.warn(
-    "sentinel_middleware.py has been archived to legacy/sentinel_middleware.py; update imports.",
+    "sentinel_middleware.py moved to legacy/; use sentinel_kernel instead.",
     DeprecationWarning,
+    stacklevel=2,
 )
 
 __all__ = []

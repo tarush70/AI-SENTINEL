@@ -1,14 +1,14 @@
-"""
-ARCHIVED: network_sentry.py
-This module has been archived and moved to legacy/network_sentry.py
+"""ARCHIVED: the network-sentry simulation is preserved in ``legacy/``.
 
-Original implementation preserved under legacy/ for historical reference.
+AI Sentinel's active proof of concept is now ``sentinel_kernel.py``.
 """
 
 import warnings
+
 warnings.warn(
-    "network_sentry.py has been archived to legacy/network_sentry.py; update imports.",
+    "network_sentry.py moved to legacy/; use sentinel_kernel instead.",
     DeprecationWarning,
+    stacklevel=2,
 )
 
 __all__ = []
