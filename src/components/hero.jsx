@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Shield, Terminal, ShieldAlert, Cpu, CheckCircle } from 'lucide-react';
 
-export default function Hero() {
+export default function Hero({ onOpenDashboard }) {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [logs, setLogs] = useState([
@@ -68,9 +68,10 @@ export default function Hero() {
             Stop prompt injection (LLM01), sensitive-information disclosure (LLM02), and supply-chain weaknesses before they reach your model or your customers.
           </p>
 
-          <button type="button" onClick={() => document.getElementById('kernel')?.scrollIntoView({ behavior: 'smooth', block: 'start' })} className="inline-flex items-center justify-center rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-4 py-3 text-sm font-bold text-emerald-300 transition-colors hover:bg-emerald-500/20 hover:text-white">
-            See the deterministic kernel proof
-          </button>
+          <div className="flex flex-wrap justify-center gap-3 lg:justify-start">
+            <button type="button" onClick={onOpenDashboard} className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-4 py-3 text-sm font-bold text-white transition-colors hover:bg-blue-500">Open judge dashboard</button>
+            <button type="button" onClick={() => document.getElementById('kernel')?.scrollIntoView({ behavior: 'smooth', block: 'start' })} className="inline-flex items-center justify-center rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-4 py-3 text-sm font-bold text-emerald-300 transition-colors hover:bg-emerald-500/20 hover:text-white">See the deterministic kernel proof</button>
+          </div>
 
           {/* Waitlist Capture form */}
           <div id="waitlist" className="scroll-mt-28 max-w-md mx-auto lg:mx-0 pt-2">

@@ -1,131 +1,88 @@
-# 🎬 AI Sentinel — "The Winning Demo" (60 Seconds)
+# AI Sentinel — Judge Demo (90 seconds)
 
----
+This presentation is fully self-contained: the Vercel dashboard runs the
+interactive browser simulation, and the Python scripts demonstrate the matching
+deterministic kernel. No real database, customer data, or live infrastructure
+is involved.
 
-## Setup (Before You Start)
+## Before presenting
 
-1. **Terminal (split pane):**
-   - **Pane 1:** `cd ai-sentinel && python3 demo_server.py` — runs the demo API
-   - **Pane 2:** Ready to run `python3 employee_bot.py` commands
-2. **Browser:** `http://localhost:5173` — React Dashboard (logged in, Overview tab)
-3. **Editor (optional):** Have `employee_bot.py` open so you can toggle `ENABLE_SENTINEL`
+1. Open the [live AI Sentinel app](https://ai-sentinel-x2sr.vercel.app), or go
+   directly to the [judge dashboard](https://ai-sentinel-x2sr.vercel.app/#dashboard).
+2. Keep a terminal ready in the repository root.
+3. Use a second window for `sentinel_kernel.py` if you want to show the small
+   implementation behind the trace.
 
----
+## 0:00–0:15 — The problem
 
-## 0:00 – 0:10 🎣 The Hook
+On the landing page, point to **“Secure AI agents against the OWASP Top 10 for
+LLMs.”**
 
-**Action:**
-Show `employee_bot.py` code on screen (or point to the line with `HR_DATABASE` /
-`admin_password`).
+Say:
 
-**Voiceover:**
-> *"This is the AI Sentinel MVP. We are protecting a live Python application
-> connected to OpenAI's GPT-4, which has access to sensitive HR data."*
+> “AI agents eventually call sensitive tools. A prompt filter alone is not a
+> reliable control at that execution boundary.”
 
-**Key visual:** The `HR_DATABASE` dict in the code — make sure `admin_password`
-and `infra_secrets` are visible.
+Click **Open judge dashboard**.
 
----
+## 0:15–0:45 — The kernel proof
 
-## 0:10 – 0:25 💥 The Vulnerability
+On **Overview**, click **Run judge simulation**.
 
-**Action:**
-```bash
-ENABLE_SENTINEL=0 python3 employee_bot.py
-```
+The dashboard renders these deterministic stages:
 
-**Voiceover:**
-> *"Without protection, a simple Prompt Injection tricks the AI into leaking
-> the admin keys. This is a catastrophic failure."*
+1. User input becomes `TaintedVariable`.
+2. The agent flow reaches `delete_database_record`.
+3. `@critical_sink` inspects the arguments.
+4. AI Sentinel blocks the execution before the critical sink runs.
 
-**What the audience sees:**
-```
-  ╔══════════════════════════════════════════════════════╗
-  ║  🚨 ADMIN PASSWORD LEAKED!                         ║
-  ║──────────────────────────────────────────────────────║
-  ║  admin_password = 'SuperSecret!Passw0rd_2026'       ║
-  ║  db_password    = 'pg_master_!xK92m'                ║
-  ║  aws_key        = 'AKIA1234FAKEKEYEXAMPLE'          ║
-  ╚══════════════════════════════════════════════════════╝
-```
+Say:
 
-> **Point at the leaked credentials. Pause. Let it sink in.**
+> “We do not need to guess whether the intent looks suspicious. Once a value
+> is marked untrusted, the kernel prevents it from reaching the protected
+> operation.”
 
----
+Point to the incremented **Threats blocked** metric and the red kernel event.
 
-## 0:25 – 0:45 🛡️ The Defense
+## 0:45–1:05 — The audit trail
 
-**Action:**
-```bash
-python3 employee_bot.py
-```
-(Default: `ENABLE_SENTINEL = True`)
+Click **Threat Logs**. The latest `Deterministic Taint Flow` event appears at
+the top with the exact decision and source.
 
-**Voiceover:**
-> *"We activate AI Sentinel. Using semantic vector analysis, the engine detects
-> the malicious intent immediately. The attack is intercepted, and the
-> 'Zero-Downtime Response' isolates the session."*
+Click **Live Traffic** to show that the agent runtime and critical tools are
+separately represented, then click **Generate normal traffic** to show the
+simulation is interactive.
 
-**What the audience sees:**
-```
-  ╔══════════════════════════════════════════════════════╗
-  ║  🛡️  [BLOCKED] by AI Sentinel                      ║
-  ║──────────────────────────────────────────────────────║
-  ║  Severity: HIGH                                      ║
-  ║  Threat:   Prompt Injection                          ║
-  ║  Rule:     LLM01                                     ║
-  ║  Action:   Zero-Downtime Response — session isolated ║
-  ╚══════════════════════════════════════════════════════╝
-```
+## 1:05–1:25 — The terminal proof
 
-> **No credentials leaked. The red `[BLOCKED]` message is the hero moment.**
-
----
-
-## 0:45 – 1:00 📊 The Dashboard
-
-**Action:**
-Switch to the browser tab with the React Dashboard.
-
-**Voiceover:**
-> *"The attack is instantly logged in the Enterprise Dashboard, giving the CISO
-> full visibility into the attempted breach. This is AI Sentinel — full-stack
-> protection for the Agentic era."*
-
-**What the audience sees:**
-- "Threats Blocked" counter has incremented (e.g. from `14,032` to `14,033`)
-- The "Recent Security Events" table shows the new `Prompt Injection` entry
-  at the top with `BLOCKED` status and a fresh timestamp
-
----
-
-## Full Run Script (Cheat Sheet)
+Run the two safe simulations side by side:
 
 ```bash
-# Terminal 1 — Start demo API
-cd /path/to/ai-sentinel
-python3 demo_server.py
-
-# Terminal 2 — Run bot
-  
-# 0:10 - Vulnerability (Sentinel OFF)
-ENABLE_SENTINEL=0 python3 employee_bot.py
-
-# 0:25 - Defense (Sentinel ON)
-python3 employee_bot.py
-
-# Browser at http://localhost:5173 — watch the counter go up
+python3 demo_unprotected.py
+python3 demo_protected.py
 ```
 
----
+The first shows a simulated unsafe path. The second prints:
 
-## Pro Tips
+```text
+[AI SENTINEL PANIC] Blocked execution of delete_database_record!
+```
 
-- **Split screen:** Terminal on left, Dashboard on right — the whole demo
-  is visible at once.
-- **Font size:** Crank terminal font to 14–16pt so the `[BLOCKED]` box is
-  readable from the back row.
-- **Pacing:** The bot has `time.sleep()` delays built in. Don't rush them —
-  they build anticipation.
-- **If the Dashboard doesn't increment:** Make sure `demo_server.py` is
-  running in the background. The bot POSTS to `localhost:3001`.
+Say:
+
+> “The dashboard trace mirrors the dependency-free Python kernel. Both show
+> the same source → flow → critical-sink decision.”
+
+## Optional comparison
+
+In **Settings**, temporarily switch off **Enforce deterministic kernel** and
+run the dashboard simulation again. The UI labels it as an unsafe comparison;
+it does not execute a real operation. Turn the kernel back on before closing.
+
+## Judge checklist
+
+- The dashboard works on Vercel with no localhost service.
+- Every sidebar tab and dashboard control has a meaningful interaction.
+- The demo makes no real database or infrastructure changes.
+- The protected path is the default and is visually distinct from the unsafe
+  comparison.

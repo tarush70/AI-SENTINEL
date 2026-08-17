@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Hero from "./components/hero";
 import Features from "./components/Features";
 import BackgroundWrapper from "./components/BackgroundWrapper";
@@ -9,20 +9,35 @@ import Dashboard from "./components/Dashboard";
 import KernelDemo from "./components/KernelDemo";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isDashboardOpen, setIsDashboardOpen] = useState(() => window.location.hash === '#dashboard');
 
-  // If user is logged in, show the SaaS Dashboard
-  if (isLoggedIn) {
-    return <Dashboard onLogout={() => setIsLoggedIn(false)} />;
+  useEffect(() => {
+    const syncDashboardRoute = () => setIsDashboardOpen(window.location.hash === '#dashboard');
+    window.addEventListener('hashchange', syncDashboardRoute);
+    return () => window.removeEventListener('hashchange', syncDashboardRoute);
+  }, []);
+
+  const openDashboard = () => {
+    window.location.hash = 'dashboard';
+    setIsDashboardOpen(true);
+  };
+
+  const closeDashboard = () => {
+    window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+    setIsDashboardOpen(false);
+  };
+
+  if (isDashboardOpen) {
+    return <Dashboard onLogout={closeDashboard} />;
   }
 
   // Otherwise, show the Marketing Website
   return (
     <BackgroundWrapper>
-      <Navbar onLoginClick={() => setIsLoggedIn(true)} />
+      <Navbar onLoginClick={openDashboard} />
       <main>
         <div id="hero">
-          <Hero />
+          <Hero onOpenDashboard={openDashboard} />
         </div>
         <KernelDemo />
         <Implementation />
